@@ -17,11 +17,43 @@ module Server
         when :handshake
           send_handshake
         when :login
+          @player.name = packet.mapping[:username]
+
           send_login
           send_map_pre_chunks
           send_map_chunks
           send_player_pos_and_look
           send_message "Hello!"
+
+          # Add another player for testing
+          @player2 = Model::Player.new
+          @player2.name = "Bob"
+          @player2.position = Model::Position.new 0.6, 4, 0.5
+
+          send_named_entity_spawn(@player2)
+        when :player_position
+          new_position = Model::Position.new packet.mapping[:x],
+            packet.mapping[:y], packet.mapping[:z]
+          @player.position = new_position
+        when :player_position_and_look
+          new_position = Model::Position.new packet.mapping[:x],
+            packet.mapping[:y], packet.mapping[:z]
+          @player.position = new_position
+
+          # TODO: notify other clients
+=begin
+          @player2.yaw = packet.mapping[:yaw]
+          @player2.pitch = packet.mapping[:pitch]
+          puts "PUTTING"
+          puts @player2.entity_id
+          puts @player2.yaw
+          puts @player2.pitch
+          write Packet::create(:entity_look, {
+            :eid => @player2.entity_id,
+            :yaw => @player2.yaw,
+            :pitch => @player2.pitch
+          }).data
+=end
         end
       end
 
@@ -94,6 +126,19 @@ module Server
       def send_message(message)
         write Packet::create(:chat_message, {
           :message => message
+        }).data
+      end
+
+      def send_named_entity_spawn(player)
+        write Packet::create(:named_entity_spawn, {
+          :eid => player.entity_id,
+          :player_name => player.name,
+          :x => player.position.abs_x,
+          :y => player.position.abs_y,
+          :z => player.position.abs_z,
+          :yaw => player.yaw,
+          :pitch => player.pitch,
+          :current_item => 0
         }).data
       end
     end
