@@ -17,7 +17,7 @@ module Server
           send_map_pre_chunks
           send_map_chunks
           send_player_pos_and_look
-          send_message
+          send_message "Hello!"
         end
       end
 
@@ -84,9 +84,9 @@ module Server
         }).data
       end
 
-      def send_message
+      def send_message(message)
         write Packet::create(:chat_message, {
-          :message => "Hello!"
+          :message => message
         }).data
       end
     end
