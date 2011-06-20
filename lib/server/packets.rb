@@ -57,7 +57,7 @@ module Server
       bool :on_ground?
     end
 
-    I(0x0D, :position_and_look) do
+    I(0x0D, :player_position_and_look) do
       double :x
       double :y
       double :stance
@@ -110,6 +110,23 @@ module Server
       float :yaw
       float :pitch
       bool :on_ground?
+    end
+
+    O(0x14, :named_entity_spawn) do
+      int :eid
+      string16 :player_name
+      int :x
+      int :y
+      int :z
+      byte :yaw
+      byte :pitch
+      short :current_item
+    end
+
+    O(0x20, :entity_look) do
+      int :eid
+      byte :yaw
+      byte :pitch
     end
 
     O(0x32, :pre_chunk) do
