@@ -71,7 +71,7 @@ module Server
 
       def get_string16
         len = get_short * 2 # 2 bytes per character in UTF-16 (similar enough to UCS-2)
-        get_bytes(len).force_encoding('UTF-16BE') # TODO: wrong encoding type?
+        get_bytes(len).force_encoding('UTF-16BE').encode('US-ASCII', { :invalid => :replace, :undef => :replace }) # TODO: wrong encoding type? yes
       end
 
       def put_string16(s)
