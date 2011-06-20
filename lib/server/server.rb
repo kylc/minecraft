@@ -14,6 +14,9 @@ module Server
       packet = Packet::parse(data)
       puts "Packet.inspect:" + packet.inspect
 
+      player = Model::Player.new
+      player.position = Model::Position.new 0.5, 4, 0.5
+
       # TODO: move all of this packet handling somewhere else
       case packet.name
       when :handshake
@@ -60,9 +63,9 @@ module Server
 
         # Player position and look
         write Packet::create(:player_pos_and_look, {
-          :x => 0.5,
-          :y => 4,
-          :z => 4,
+          :x => player.position.x,
+          :y => player.position.y,
+          :z => player.position.z,
           :stance => 4,
           :yaw => 0,
           :pitch => 0,
