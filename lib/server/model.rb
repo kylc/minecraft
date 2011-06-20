@@ -21,8 +21,21 @@ module Server
     end
 
     class World
+      class << self
+        # @return [World] the world
+        attr_reader :world
+
+        @world = World.new
+      end
+
       # @return [Array] the list of players in this world
       attr_reader :players
+
+      private
+
+      def initialize
+        @players = []
+      end
     end
 
     class Entity
