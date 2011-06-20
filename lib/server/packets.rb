@@ -35,6 +35,10 @@ module Server
       string16 :message
     end
 
+    I(0x10, :holding_change) do
+      short :slot_id
+    end
+
     I(0x0A, :player) do
       bool :on_ground?
     end
