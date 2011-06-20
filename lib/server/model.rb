@@ -49,21 +49,19 @@ module Server
       attr_reader :entity_id
 
       # @return [Position] the entity's current position in the world
-      attr_reader :position
+      attr_accessor :position
+
+      attr_accessor :yaw, :pitch
 
       def initialize
         @entity_id = Model::next_entity_id
-      end
-
-      def position=(position)
-        # TODO: notify the client that the position has changed
-        @position = position
+        @yaw, @pitch = 0, 0
       end
     end
 
     class Player < Entity
       # @return [String] the player's username
-      attr_reader :name
+      attr_accessor :name
     end
   end
 end
