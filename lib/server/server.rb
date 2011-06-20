@@ -1,14 +1,6 @@
 module Server
   class Connection < Coolio::TCPSocket
     def on_connect
-      keepalive = Coolio::TimerWatcher.new(1, true)
-      keepalive.on_timer do
-        # TODO: write isn't in the TimerWatcher's context, come up with a better
-        # method for handling this
-        # write Packet::create(:keep_alive, {}).data
-      end
-      keepalive.attach(Coolio::Loop.default)
-
       @player = Model::Player.new
       @player.position = Model::Position.new 0.5, 4, 0.5
 
