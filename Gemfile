@@ -1,1 +1,1 @@
-gem 'cool.io'
+gem 'eventmachine'

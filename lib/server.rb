@@ -1,7 +1,7 @@
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift libdir unless $LOAD_PATH.include? libdir
 
-require 'cool.io'
+require 'eventmachine'
 require 'zlib'
 
 require 'server/io'
@@ -20,6 +20,6 @@ module Server
 
   def self.start(options = {})
     options = DEFAULT_OPTIONS.merge(options)
-    Server.new(options).start
+    Server.start(options)
   end
 end

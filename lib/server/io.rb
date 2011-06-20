@@ -44,7 +44,7 @@ module Server
       end
 
       def get_float
-        get_bytes(4).unpack('g')
+        get_bytes(4).unpack('g')[0]
       end
 
       def put_float(v)
@@ -53,7 +53,7 @@ module Server
 
       # TODO: is the offset correct here?
       def get_long
-        get_bytes(8).unpack('q')
+        get_bytes(8).unpack('q')[0]
       end
 
       def put_long(v)
@@ -62,7 +62,7 @@ module Server
       end
 
       def get_double
-        get_bytes(8).unpack('G')
+        get_bytes(8).unpack('G')[0]
       end
 
       def put_double(v)
