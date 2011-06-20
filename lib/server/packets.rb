@@ -102,7 +102,7 @@ module Server
       long :time
     end
 
-    O(0x0D, :player_pos_and_look) do
+    O(0x0D, :player_position_and_look) do
       double :x
       double :y
       double :stance
@@ -121,6 +121,13 @@ module Server
       byte :yaw
       byte :pitch
       short :current_item
+    end
+
+    O(0x1F, :entity_relative_move) do
+      int :eid
+      byte :dx
+      byte :dy
+      byte :dz
     end
 
     O(0x20, :entity_look) do
