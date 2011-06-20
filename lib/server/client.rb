@@ -7,9 +7,7 @@ module Server
         @connection = connection
         @player = player
 
-        keepalive = KeepaliveTimer.new(1, true)
-        keepalive.parent = self
-        keepalive.attach(Coolio::Loop.default)
+        EventMachine::add_periodic_timer(1) { send_keepalive }
       end
 
       def received(packet)
@@ -26,12 +24,11 @@ module Server
       end
 
       def write(packet)
-        @connection.write packet
+        @connection.send_data packet
       end
 
       def send_keepalive
         write Packet::create(:keep_alive, {}).data
-        puts "SENT KEEPALIVE"
       end
 
       def send_handshake
@@ -95,17 +92,6 @@ module Server
         write Packet::create(:chat_message, {
           :message => message
         }).data
-      end
-    end
-
-    # TODO: is there a simpler way to do this?
-    class KeepaliveTimer < Coolio::TimerWatcher
-      def parent=(parent)
-        @parent = parent
-      end
-
-      def on_timer
-        @parent.send_keepalive
       end
     end
   end

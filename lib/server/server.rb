@@ -1,13 +1,13 @@
 module Server
-  class Connection < Coolio::TCPSocket
-    def on_connect
+  class Connection < EventMachine::Connection
+    def post_init
       @player = Model::Player.new
       @player.position = Model::Position.new 0.5, 4, 0.5
 
       @client = Client::Client.new(self, @player)
     end
 
-    def on_read(data)
+    def receive_data(data)
       packet = Packet::parse(data)
       puts "Packet.inspect:" + packet.inspect
 
@@ -23,11 +23,12 @@ module Server
     end
 
     def start
-      server = Coolio::TCPServer.new(@host, @port, Connection)
-      server.attach(Coolio::Loop.default)
+      EventMachine::run do
+        EventMachine::epoll
+        EventMachine::start_server(@host, @port, Connection)
 
-      puts "Server listening for connections on #{@host}:#{@port}..."
-      Coolio::Loop.default.run
+        puts "Server listening for connections on #{@host}:#{@port}..."
+      end
     end
   end
 end
