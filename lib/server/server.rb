@@ -27,7 +27,7 @@ module Server
       when :login
         # Login response
         write Packet::create(:login, {
-          :entity_id => 1,
+          :entity_id => player.entity_id,
           :_unused => '',
           :map_seed => 1,
           :dimension => 0

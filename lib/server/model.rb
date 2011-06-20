@@ -3,6 +3,12 @@ module Server
   # Module used for the representation of in-game objects, items, characters,
   # etc.  These classes should not be too coupled to the network layer.
   module Model
+    @last_entity_id = 0
+
+    def self.next_entity_id
+      @last_entity_id += 1
+    end
+
     class Position
       BLOCK_SIZE = 32
 
@@ -39,8 +45,15 @@ module Server
     end
 
     class Entity
+      # @return [Fixnum] the entity's unique ID
+      attr_reader :entity_id
+
       # @return [Position] the entity's current position in the world
       attr_reader :position
+
+      def initialize
+        @entity_id = Model::next_entity_id
+      end
 
       def position=(position)
         # TODO: notify the client that the position has changed
