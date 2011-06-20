@@ -8,6 +8,7 @@ require 'server/io'
 require 'server/map'
 require 'server/packet'
 require 'server/packets'
+require 'server/client'
 require 'server/model'
 require 'server/server'
 
