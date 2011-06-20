@@ -23,6 +23,13 @@ module Server
         end
       end
 
+      def other_clients(&block)
+        others = Server.clients.select { |x| x.player.entity_id != @player.entity_id }
+        others.each do |other|
+          other.instance_eval(&block)
+        end
+      end
+
       def write(packet)
         @connection.send_data packet
       end

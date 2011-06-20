@@ -20,6 +20,6 @@ module Server
 
   def self.start(options = {})
     options = DEFAULT_OPTIONS.merge(options)
-    Server.new(options).start
+    Server.start(options)
   end
 end

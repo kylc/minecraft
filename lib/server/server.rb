@@ -5,6 +5,7 @@ module Server
       @player.position = Model::Position.new 0.5, 4, 0.5
 
       @client = Client::Client.new(self, @player)
+      Server.clients << @client
     end
 
     def receive_data(data)
@@ -16,19 +17,27 @@ module Server
   end
 
   class Server
-    attr_reader :host, :port
+    class << self
+      attr_reader :host, :port
 
-    def initialize(options)
-      @host, @port = options[:host], options[:port]
+      attr_reader :clients
+
+      def start(options)
+        @host, @port = options[:host], options[:port]
+        @clients = []
+
+        EventMachine::run do
+          EventMachine::epoll
+          EventMachine::start_server(@host, @port, Connection)
+
+          puts "Server listening for connections on #{@host}:#{@port}..."
+        end
+      end
     end
 
-    def start
-      EventMachine::run do
-        EventMachine::epoll
-        EventMachine::start_server(@host, @port, Connection)
+    private
 
-        puts "Server listening for connections on #{@host}:#{@port}..."
-      end
+    def initialize
     end
   end
 end
