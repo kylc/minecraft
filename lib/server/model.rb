@@ -20,7 +20,13 @@ module Server
       end
     end
 
+    class World
+      # @return [Array] the list of players in this world
+      attr_reader :players
+    end
+
     class Entity
+      # @return [Position] the entity's current position in the world
       attr_reader :position
 
       def position=(position)
