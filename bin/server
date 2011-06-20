@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.expand_path('../../lib', __FILE__)
+
+require 'optparse'
+require 'server'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: server [options]"
+
+  opts.on("-h", "--host HOST", "Host to listen on") do |h|
+    options[:host] = h
+  end
+
+  opts.on("-p", "--port PORT", "Port to listen on") do |p|
+    options[:port] = p.to_i
+  end
+end.parse!
+
+Server::start(options)
